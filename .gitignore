@@ -1,3 +1,6 @@
+postgres-data
+assets/nohup.out
+
 # App artifacts
 /_build
 /db

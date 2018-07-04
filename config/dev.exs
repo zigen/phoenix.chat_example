@@ -54,5 +54,5 @@ config :awesome_chat, AwesomeChat.Repo,
   username: "postgres",
   password: "postgres",
   database: "awesome_chat_dev",
-  hostname: "localhost",
+  hostname: "db",
   pool_size: 10
