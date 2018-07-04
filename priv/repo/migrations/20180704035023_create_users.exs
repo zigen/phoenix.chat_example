@@ -3,9 +3,9 @@ defmodule AwesomeChat.Repo.Migrations.CreateUsers do
 
   def change do
     create table(:users) do
-      add :name, :string
-      add :password_hash, :string
-      add :avatar_url, :string
+      add :name, :string, null: false
+      add :password_hash, :string, null: false
+      add :avatar_url, :string, null: true
 
       timestamps()
     end
