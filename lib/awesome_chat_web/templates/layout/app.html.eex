@@ -17,8 +17,14 @@
         <nav role="navigation">
           <ul class="nav nav-pills pull-right">
             <li><a href="http://www.phoenixframework.org/docs">Get Started</a></li>
-            <li><%= link("register", to: user_path(@conn, :new)) %></li>
-            <li><%= link("login", to: user_path(@conn, :login)) %></li>
+            <% user = authenticated_user(@conn) %>
+            <%= if(user) do %>
+              <li><%= link(user.name, to: user_path(@conn, :show, user)) %></li>
+              <li><%= link("logout", to: user_path(@conn, :logout), method: :delete) %></li>
+            <% else %>
+              <li><%= link("register", to: user_path(@conn, :new)) %></li>
+              <li><%= link("login", to: user_path(@conn, :login)) %></li>
+            <% end %>
           </ul>
         </nav>
       </header>

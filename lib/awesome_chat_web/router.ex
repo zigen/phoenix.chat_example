@@ -20,6 +20,7 @@ defmodule AwesomeChatWeb.Router do
     resources "/users", UserController, only: [:new, :create, :edit, :show, :update, :delete]
     get "/login", UserController, :login
     post "/login", UserController, :do_login
+    delete "/logout", UserController, :logout
   end
 
   # Other scopes may use custom stacks.

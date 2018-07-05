@@ -5,8 +5,31 @@ defmodule AwesomeChat.Accounts do
 
   import Ecto.Query, warn: false
   alias AwesomeChat.Repo
-
   alias AwesomeChat.Accounts.User
+  alias Comeonin.Bcrypt
+
+  @doc """
+
+  """
+  @spec authenticate_user(map()) :: {:ok, %User{}} | {:error, %Ecto.Changeset{}}
+  def authenticate_user(%{"name" => name, "password" => password} = params) do
+    changeset = %User{} |> User.changeset(params)
+    case get_user_by_name(name) do
+      %User{} = user -> if Bcrypt.checkpw(password, user.password_hash) do
+                       {:ok, user}
+                     else
+                       {:error, changeset}
+                     end
+      _ ->
+        Bcrypt.dummy_checkpw()
+        {:error, changeset}
+    end
+  end
+
+
+  def authenticate_user(_) do
+    Bcrypt.dummy_checkpw()
+  end
 
   @doc """
   Returns the list of users.
@@ -36,6 +59,11 @@ defmodule AwesomeChat.Accounts do
 
   """
   def get_user!(id), do: Repo.get!(User, id)
+
+  @spec get_user_by_name(binary()) :: %User{} | nil
+  def get_user_by_name(name) when is_binary(name) do
+    Repo.one(from u in User, where: u.name == ^name, limit: 1)
+  end
 
   @doc """
   Creates a user.

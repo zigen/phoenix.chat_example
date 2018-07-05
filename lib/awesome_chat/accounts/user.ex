@@ -15,7 +15,6 @@ defmodule AwesomeChat.Accounts.User do
 
   @doc false
   def changeset(user, %{"password" => password} = attrs) do
-    IO.inspect attrs
     user
     |> cast(attrs, [:name, :avatar_url])
     |> put_change(:password_hash, hashpwsalt(password))

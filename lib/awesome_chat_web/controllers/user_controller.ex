@@ -29,13 +29,23 @@ defmodule AwesomeChatWeb.UserController do
     case Accounts.authenticate_user(user_params) do
       {:ok, user} ->
         conn
+        |> configure_session(renew: true)
+        |> put_session(:authenticated_user, user)
         |> put_flash(:info, "User logged in successfully.")
         |> redirect(to: user_path(conn, :show, user))
       {:error, %Ecto.Changeset{} = changeset} ->
         conn
+        |> configure_session(drop: true)
         |> put_flash(:error, "failed to log in.")
         |> render("login.html", changeset: changeset)
     end
+  end
+
+  def logout(conn, _) do
+    conn
+    |> configure_session(drop: true)
+    |> put_flash(:info, "logged out successfully.")
+    |> redirect(to: user_path(conn, :login))
   end
 
 
