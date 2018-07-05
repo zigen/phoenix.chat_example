@@ -17,7 +17,9 @@ defmodule AwesomeChatWeb.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
-    resources "/users", UserController
+    resources "/users", UserController, only: [:new, :create, :edit, :show, :update, :delete]
+    get "/login", UserController, :login
+    post "/login", UserController, :do_login
   end
 
   # Other scopes may use custom stacks.
