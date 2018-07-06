@@ -2,7 +2,7 @@ defmodule AwesomeChatWeb.UserSocket do
   use Phoenix.Socket
 
   ## Channels
-  # channel "room:*", AwesomeChatWeb.RoomChannel
+  channel "room:*", AwesomeChatWeb.RoomChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket
