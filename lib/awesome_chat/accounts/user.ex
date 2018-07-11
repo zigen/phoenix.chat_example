@@ -8,6 +8,8 @@ defmodule AwesomeChat.Accounts.User do
     field :avatar_url, :string
     field :name, :string
     field :password_hash, :string
+    field :access_token, :string
+    field :access_token_expired_at, :naive_datetime
     field :password, :string, virtual: true
 
     timestamps()
@@ -23,7 +25,7 @@ defmodule AwesomeChat.Accounts.User do
 
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:name, :avatar_url, :password_hash])
+    |> cast(attrs, [:name, :avatar_url, :access_token, :access_token_expired_at])
     |> validate_required([:name, :password_hash])
   end
 end

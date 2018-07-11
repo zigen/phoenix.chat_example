@@ -43,7 +43,8 @@ defmodule AwesomeChat.Mixfile do
       {:cowboy, "~> 1.0"},
       {:comeonin, "~> 4.0"},
       {:bcrypt_elixir, "~> 1.0"},
-      {:dialyxir, "~> 0.5", only: [:dev]}
+      {:dialyxir, "~> 0.5", only: [:dev]},
+      {:secure_random, "~> 0.5"}
     ]
   end
 

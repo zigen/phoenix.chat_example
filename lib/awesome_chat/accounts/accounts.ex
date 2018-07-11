@@ -16,7 +16,7 @@ defmodule AwesomeChat.Accounts do
     changeset = %User{} |> User.changeset(params)
     case get_user_by_name(name) do
       %User{} = user -> if Bcrypt.checkpw(password, user.password_hash) do
-                       {:ok, user}
+                      renew_access_token(user)
                      else
                        {:error, changeset}
                      end
@@ -26,9 +26,28 @@ defmodule AwesomeChat.Accounts do
     end
   end
 
+  def authenticate_user(%{"access_token" => token} = params) do
+    changeset = %User{} |> User.changeset(params)
+    case get_user_by_token(token) do
+      %User{} = user -> {:ok, user}
+      _ ->
+        Bcrypt.dummy_checkpw()
+        {:error, changeset}
+    end
+  end
 
   def authenticate_user(_) do
     Bcrypt.dummy_checkpw()
+  end
+
+  @spec renew_access_token(%User{}) :: {:ok, %User{}} | {:error, %Ecto.Changeset{}}
+  defp renew_access_token(%User{} = user) do
+    user
+    |> User.changeset(%{
+      access_token: SecureRandom.urlsafe_base64(64),
+      access_token_expired_at: NaiveDateTime.add(NaiveDateTime.utc_now, 865_000, :seconds)
+    })
+    |> Repo.update()
   end
 
   @doc """
